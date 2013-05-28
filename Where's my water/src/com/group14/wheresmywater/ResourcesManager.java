@@ -9,6 +9,7 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.BaseGameActivity;
 
+import android.content.Context;
 import android.content.res.AssetManager;
 
 public class ResourcesManager {
@@ -28,6 +29,9 @@ public class ResourcesManager {
     //---------------------------------------------
     public SplashSceneResource _splashSceneResource;
     public MainMenuSceneResource _mainMenuSceneResource;
+    public LoadingSceneResource _loadingSceneResource;
+    public ScoreSceneResource _scoreSceneResource;
+    public Level01Resource _level01Resource; 
     
     //---------------------------------------------
     // LOAD & UNLOAD RESOURCE
@@ -39,11 +43,13 @@ public class ResourcesManager {
     }
     
     public void unloadSplashScreen()
-    {
-    	_splashSceneResource.unload();
-    	_splashSceneResource = null;
-    }
-    
+ {
+		if (_splashSceneResource != null) {
+			_splashSceneResource.unload();
+			_splashSceneResource = null;
+		}
+	}
+
     public void loadMainMenuScreen()
     {
     	_mainMenuSceneResource = new MainMenuSceneResource();
@@ -52,14 +58,52 @@ public class ResourcesManager {
     
     public void unloadMainMenuScreen()
     {
-    	_mainMenuSceneResource.unload();
-    	_mainMenuSceneResource = null;
+		if (_mainMenuSceneResource != null) {
+			_mainMenuSceneResource.unload();
+			_mainMenuSceneResource = null;
+		}
     }
     
-    public void loadMenuResources()
+    public void loadLoadingScreen()
     {
-        loadMenuGraphics();
-        loadMenuAudio();
+    	_loadingSceneResource = new LoadingSceneResource();
+    	_loadingSceneResource.load();
+    }
+    
+    public void unloadLoadingScreen()
+    {
+		if (_loadingSceneResource != null) {
+			_loadingSceneResource.unload();
+			_loadingSceneResource = null;
+		}
+    }
+     
+    public void loadLevel01Screen()
+    {
+    	_level01Resource = new Level01Resource();
+    	_level01Resource.load();
+    }
+    
+    public void unloadLevel01Screen()
+    {
+		if (_level01Resource != null) {
+			_level01Resource.unload();
+			_level01Resource = null;
+		}
+    }
+    
+    public void loadScoreScreen()
+    {
+    	_scoreSceneResource = new ScoreSceneResource();
+    	_scoreSceneResource.load();
+    }
+    
+    public void unloadScoreScreen()
+    {
+		if (_scoreSceneResource != null) {
+			_scoreSceneResource.unload();
+			_scoreSceneResource = null;
+		}
     }
     
     public void loadGameResources()
@@ -124,28 +168,33 @@ public class ResourcesManager {
     //---------------------------------------------
     // GET MANAGERS
     //--------------------------------------------- 
-    protected FontManager getFontManager()
+    public FontManager getFontManager()
 	{
 		return _engine.getFontManager();
 	}
 	
-	protected MusicManager getMusicManager()
+	public MusicManager getMusicManager()
 	{
 		return _engine.getMusicManager();
 	}
 	
-	protected TextureManager getTextureManager()
+	public TextureManager getTextureManager()
 	{
 		return _engine.getTextureManager();
 	} 
 	
-	protected SoundManager getSoundManager()
+	public SoundManager getSoundManager()
 	{
 		return _engine.getSoundManager();
 	} 
 	
-	protected AssetManager getAssets()
+	public AssetManager getAssets()
 	{
 		return ((BaseGameActivity)_activity).getAssets();
+	} 
+	
+	public Context getApplicationContext()
+	{
+		return _activity.getApplicationContext();
 	} 
 }

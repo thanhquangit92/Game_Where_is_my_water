@@ -7,10 +7,10 @@ import org.andengine.opengl.util.GLState;
 import com.group14.wheresmywater.SceneManager.SceneType;
 
 public class SplashScene extends BaseScene{
-	private SplashSceneResource _resource = ResourcesManager.getInstance()._splashSceneResource;
+	private static SplashSceneResource _resource = ResourcesManager.getInstance()._splashSceneResource;
 	
-	private Sprite splash;
-
+	private Sprite splash; 
+	
 	@Override
 	public void createScene() {
 		// TODO Auto-generated method stub
@@ -48,6 +48,19 @@ public class SplashScene extends BaseScene{
 	public SceneType getSceneType() {
 		// TODO Auto-generated method stub
 		return SceneType.SCENE_SPLASH;
+	}
+	
+
+	@Override
+	public BaseScene clone() {
+		// TODO Auto-generated method stub
+		return new SplashScene();
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		ResourcesManager.getInstance().loadSplashScreen();
 	}
 
 }

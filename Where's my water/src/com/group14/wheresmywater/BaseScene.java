@@ -39,4 +39,6 @@ public abstract class BaseScene extends Scene {
 	public abstract void onBackKeyPressed(); 
 	public abstract void disposeScene();
 	public abstract SceneType getSceneType();
+	public abstract BaseScene clone();
+	public abstract void load();
 }

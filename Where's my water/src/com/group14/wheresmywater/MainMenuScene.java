@@ -28,16 +28,15 @@ import android.os.Environment;
 
 public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener{   
 	
-	private MainMenuSceneResource resource = ResourcesManager.getInstance()._mainMenuSceneResource;
+	private static MainMenuSceneResource _resource = ResourcesManager.getInstance()._mainMenuSceneResource;
 	private Sprite background; 
 	private Sprite logo;   
 	private Sprite radio; 
 	private MenuScene childScene; 
 
 	@Override
-	public void createScene() { 
-		createBackground();
-		createLogo();
+	public void createScene() {  
+		createBackground(); 
 		createRadio();
 		createMenu();
 		createMusic();
@@ -45,17 +44,12 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	} 
 	
 	private void createBackground() {   
-		background = new Sprite(0, 0, Global.CAMERA_WIDTH, Global.CAMERA_HEIGHT, resource.bg_region, _vbom);
+		background = new Sprite(0, 0, Global.CAMERA_WIDTH, Global.CAMERA_HEIGHT, _resource.bg_region, _vbom);
 		setBackground(new SpriteBackground(background));  
-	}
-
-	private void createLogo() { 
-		logo = new Sprite(144, 0, resource.logo_region, _vbom);
-		this.attachChild(logo); 
-	}
+	} 
 
 	private void createRadio() { 
-		radio = new Radio(137, 500, 155, 200, resource.radio_region, _vbom);
+		radio = new Radio(137, 500, 155, 200, _resource.radio_region, _vbom);
 		this.attachChild(radio);
 	}
 	
@@ -82,7 +76,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	    childScene = new MenuScene(this._camera);
 	    childScene.setPosition(0, 0);
 	    
-	    final IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, 274, 82, resource.btnPlay_region, _vbom), 1.1f, 1);
+	    final IMenuItem playMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(MENU_PLAY, 274, 82, _resource.btnPlay_region, _vbom), 1.1f, 1);
 	     
 	    childScene.addMenuItem(playMenuItem);  
 	    childScene.buildAnimations();
@@ -95,8 +89,8 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	}
 	
 	private void createMusic(){ 
-		resource.music.setLooping(true);
-		resource.music.play();
+		_resource.music.setLooping(true);
+		_resource.music.play();
 	} 
 	
 	@Override
@@ -130,15 +124,17 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		// TODO Auto-generated method stub
-		resource.music.stop();
+		_resource.music.stop();
 		
 		int id = pMenuItem.getID();
 		switch (id) {
 		case MENU_PLAY:
-//			if (isPlayFirst()) {
+			if (isPlayFirst()) {
+				 SceneManager.getInstance().loadLevel01Scene(_engine);
 //				BaseScene select = new SelectLevel(_sceneManager); 
 //				_sceneManager.setScene(select);
-//			} else {
+			} 
+//				else {
 //				BaseScene game = new Level01(_sceneManager);
 //				_sceneManager.setScene(game);
 //			}
@@ -152,19 +148,31 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	private boolean isPlayFirst() {
 		// TODO Auto-generated method stub
-		try {
-			File root = Environment.getExternalStorageDirectory(); 
-			FileReader filereader = new FileReader(new File(root, "wmw.txt"));   
-			filereader.close();
-		} catch (FileNotFoundException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-			return false;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}  
+//		try {
+//			File root = Environment.getExternalStorageDirectory(); 
+//			FileReader filereader = new FileReader(new File(root, "wmw.txt"));   
+//			filereader.close();
+//		} catch (FileNotFoundException e1) {
+//			// TODO Auto-generated catch block
+//			e1.printStackTrace();
+//			return false;
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}  
 		return true;
+	}
+
+	@Override
+	public BaseScene clone() {
+		// TODO Auto-generated method stub
+		return new MainMenuScene();
+	}
+
+	@Override
+	public void load() {
+		// TODO Auto-generated method stub
+		ResourcesManager.getInstance().loadMainMenuScreen();
 	} 
 	
 	

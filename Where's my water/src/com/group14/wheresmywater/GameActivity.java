@@ -3,6 +3,8 @@ package com.group14.wheresmywater;
 import org.andengine.engine.Engine;
 import org.andengine.engine.LimitedFPSEngine;
 import org.andengine.engine.camera.SmoothCamera;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
@@ -57,7 +59,6 @@ public class GameActivity extends BaseGameActivity {
 	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback)throws Exception {
 		ResourcesManager.prepareManager(mEngine, this, mCamera, getVertexBufferObjectManager());
 		mResourcesManager = ResourcesManager.getInstance();
-		//mSceneManager = new SceneManager(mEngine, this, mCamera, getVertexBufferObjectManager());
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
@@ -65,22 +66,26 @@ public class GameActivity extends BaseGameActivity {
 	public final void onCreateScene(final OnCreateSceneCallback pOnCreateSceneCallback) throws Exception {
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 		SceneManager.getInstance().createSplashScene(pOnCreateSceneCallback);
-	//	BaseScene menu = new MainMenuScene(mSceneManager);
-	//	mSceneManager.setScene(menu);
-
 		pOnCreateSceneCallback.onCreateSceneFinished(mSceneManager.getCurrentScene());
 	}
 
 	@Override
 	public final void onPopulateScene(final Scene pScene, final OnPopulateSceneCallback pOnPopulateSceneCallback)throws Exception {
+		 mEngine.registerUpdateHandler(new TimerHandler(2f, new ITimerCallback() 
+		    {
+		        public void onTimePassed(final TimerHandler pTimerHandler) 
+		        {
+		            mEngine.unregisterUpdateHandler(pTimerHandler);
+		            SceneManager.getInstance().createMenuScene();
+		        }
+		    }));
 		pOnPopulateSceneCallback.onPopulateSceneFinished();
 	}
 
 	@Override
 	protected void onDestroy() {
 		super.onDestroy();
-		if (this.isGameLoaded()) {
-			// sceneManager.dispose();
+		if (this.isGameLoaded()) { 
 			System.exit(0);
 		}
 	}
@@ -97,10 +102,11 @@ public class GameActivity extends BaseGameActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			mSceneManager.getCurrentScene().onBackKeyPressed();
-		}
-		return false;
+		if (keyCode == KeyEvent.KEYCODE_BACK)
+	    {
+	        SceneManager.getInstance().getCurrentScene().onBackKeyPressed();
+	    }
+	    return false; 
 	}
 
 	@Override

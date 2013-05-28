@@ -1,6 +1,7 @@
 package com.group14.wheresmywater;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -13,8 +14,8 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
 public class MainMenuSceneResource {
-private ResourcesManager resourceManager = ResourcesManager.getInstance();
-	
+	private ResourcesManager resourceManager = ResourcesManager.getInstance();
+
 	public ITextureRegion bg_region;
 	private BitmapTextureAtlas bgTextureAtlas;
 	
@@ -22,17 +23,14 @@ private ResourcesManager resourceManager = ResourcesManager.getInstance();
 	private BitmapTextureAtlas btnOptionsTextureAtlas;
 	
 	public TextureRegion btnPlay_region;
-	private BitmapTextureAtlas btnPlayTextureAtlas;
-	
-	public TextureRegion logo_region; 
-	private BitmapTextureAtlas logoTextureAtlas; 
-	
+	private BitmapTextureAtlas btnPlayTextureAtlas; 
+	 
 	public TextureRegion cranky_region; 
 	private BitmapTextureAtlas crankyTextureAtlas;
 	
 	public TextureRegion radio_region; 
-	private BitmapTextureAtlas radioTextureAtlas; 
-	 
+	private BitmapTextureAtlas radioTextureAtlas;  
+	
 	public Music music; 
 	
 	public void load() {
@@ -45,7 +43,7 @@ private ResourcesManager resourceManager = ResourcesManager.getInstance();
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		bgTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 1024, 1024, TextureOptions.BILINEAR);
-		bg_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(bgTextureAtlas, resourceManager._activity, "bg_main_menu.jpg", 0, 0);
+		bg_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(bgTextureAtlas, resourceManager._activity, "bg_main_menu.png", 0, 0);
 		bgTextureAtlas.load(); 
 		
 		btnPlayTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 512, 256, TextureOptions.BILINEAR);
@@ -57,16 +55,13 @@ private ResourcesManager resourceManager = ResourcesManager.getInstance();
 		btnOptionsTextureAtlas.load(); 
 		
 		radioTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		radio_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(radioTextureAtlas, resourceManager._activity, "radio", 0, 0);
+		radio_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(radioTextureAtlas, resourceManager._activity, "radio.png", 0, 0);
 		radioTextureAtlas.load();  
 		 
 //		btnOptionsTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
 //		btnOptions_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btnOptionsTextureAtlas, resourceManager._activity, "splash.png", 0, 0);
-//		crankyTextureAtlas.load(); 
-		
-		logoTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(),512, 256, TextureOptions.BILINEAR);
-		logo_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(logoTextureAtlas, resourceManager._activity, "wmw_logo.png", 0, 0);
-		logoTextureAtlas.load(); 
+//		crankyTextureAtlas.load();  
+		  
 	}
 
 	private void loadAudio() {
@@ -96,11 +91,7 @@ private ResourcesManager resourceManager = ResourcesManager.getInstance();
 		radio_region = null;
 		
 //		btnOptionsTextureAtlas.unload();
-//		btnOptions_region = null;
-		
-		logoTextureAtlas.unload();
-		logo_region = null;
-		
+//		btnOptions_region = null; 
 		music = null;
 	}
 }

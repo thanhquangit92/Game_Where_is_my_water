@@ -1,13 +1,19 @@
 package com.group14.wheresmywater;
 
+import java.util.ArrayList;
+
 import org.andengine.engine.Engine;
-import org.andengine.engine.camera.Camera;
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
-import org.andengine.ui.activity.BaseGameActivity; 
 
 public class SceneManager {
- 
+
+	// ---------------------------------------------
+	// LIST SCENES
+	// ---------------------------------------------
+	private static ArrayList<BaseScene> listGameScene;
+	
 	// ---------------------------------------------
 	// SCENES
 	// ---------------------------------------------
@@ -15,6 +21,7 @@ public class SceneManager {
 	private BaseScene _menuScene;
 	private BaseScene _loadScene;
 	private BaseScene _gameScene;  
+	private BaseScene _scoreScene;
 	
 	// ---------------------------------------------
 	// TYPE SCENES
@@ -24,7 +31,8 @@ public class SceneManager {
         SCENE_SPLASH,
         SCENE_MENU,
         SCENE_GAME,
-        SCENE_LOADING,
+        SCENE_LOADING, 
+        SCENE_SCORE,
     }
 	
 	 //---------------------------------------------
@@ -34,7 +42,11 @@ public class SceneManager {
     private SceneType _currentSceneType = SceneType.SCENE_SPLASH; 
     private BaseScene _currentScene; 
     private Engine _engine = ResourcesManager.getInstance()._engine; 
-	 
+
+//    private SceneManager(){ 
+//    	listGameScene = new ArrayList<BaseScene>();
+//    	listGameScene.add(new Level01());
+//    }
 
 	public void setScene(BaseScene scene)
     {  
@@ -137,5 +149,63 @@ public class SceneManager {
         ResourcesManager.getInstance().unloadSplashScreen();
         _splashScene.disposeScene();
         _splashScene = null;
+    }
+    
+    public void createMenuScene()
+    {
+        ResourcesManager.getInstance().loadMainMenuScreen();
+        ResourcesManager.getInstance().loadLoadingScreen();
+        _menuScene = new MainMenuScene();
+        _loadScene = new LoadingScene();
+        setScene(_menuScene);
+        disposeSplashScene();
+    }
+    
+    public void loadLevel01Scene(final Engine mEngine)
+    {
+        setScene(_loadScene);
+        ResourcesManager.getInstance().unloadMainMenuScreen();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadLevel01Screen();
+                _gameScene = new Level01();
+                setScene(_gameScene);
+            }
+        }));
+    }
+    
+    public void loadScoreScene(final Engine mEngine)
+    {
+        setScene(_loadScene);
+        _currentScene.disposeScene();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadScoreScreen();
+                _scoreScene = new ScoreScene();
+                setScene(_scoreScene);
+            }
+        }));
+    }
+    
+    public void loadSceneGameReplay(final Engine mEngine)
+    {
+        setScene(_loadScene);
+        _currentScene.disposeScene();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                _gameScene.load();
+                _gameScene = _gameScene.clone();
+                setScene(_gameScene);
+            }
+        }));
     }
 }
