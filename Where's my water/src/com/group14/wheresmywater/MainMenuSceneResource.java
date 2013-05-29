@@ -1,17 +1,15 @@
 package com.group14.wheresmywater;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
-import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 
 public class MainMenuSceneResource {
 	private ResourcesManager resourceManager = ResourcesManager.getInstance();
@@ -25,7 +23,7 @@ public class MainMenuSceneResource {
 	public TextureRegion btnPlay_region;
 	private BitmapTextureAtlas btnPlayTextureAtlas; 
 	 
-	public TextureRegion cranky_region; 
+	public TiledTextureRegion cranky_region; 
 	private BitmapTextureAtlas crankyTextureAtlas;
 	
 	public TextureRegion radio_region; 
@@ -58,17 +56,18 @@ public class MainMenuSceneResource {
 		radio_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(radioTextureAtlas, resourceManager._activity, "radio.png", 0, 0);
 		radioTextureAtlas.load();  
 		 
-//		btnOptionsTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-//		btnOptions_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btnOptionsTextureAtlas, resourceManager._activity, "splash.png", 0, 0);
-//		crankyTextureAtlas.load();  
+		crankyTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 512, 512, TextureOptions.BILINEAR);
+		cranky_region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(crankyTextureAtlas, resourceManager._activity, "cranky_waitwater.png", 0, 0, 4, 4);
+		crankyTextureAtlas.load();  
 		  
 	}
 
 	private void loadAudio() {
 		// TODO Auto-generated method stub 
+		MusicFactory.setAssetBasePath("sfx/");
 		try
 		{
-		    music = MusicFactory.createMusicFromAsset(resourceManager.getMusicManager(), resourceManager._activity, "sfx/start_game_music.mp3");
+		    music = MusicFactory.createMusicFromAsset(resourceManager.getMusicManager(), resourceManager._activity, "start_game_music.mp3");
 		}
 		catch (IOException e)
 		{

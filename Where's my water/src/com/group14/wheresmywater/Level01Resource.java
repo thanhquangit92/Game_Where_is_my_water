@@ -41,6 +41,8 @@ public class Level01Resource {
 	public Sound soundGameWin;
 	public Sound soundWaterDrop;
 	public Sound soundDucky;
+	public Sound soundCrankyCry;
+	public Sound soundCrankyLaugh;
 	public Music music;
 	
 	public void load(){
@@ -96,6 +98,8 @@ public class Level01Resource {
 			soundGameWin = SoundFactory.createSoundFromAsset(resourceManager.getSoundManager(), resourceManager.getApplicationContext(), "gamewin.ogg");
 			soundWaterDrop = SoundFactory.createSoundFromAsset(resourceManager.getSoundManager(), resourceManager.getApplicationContext(), "waterdrop.ogg");
 			soundDucky = SoundFactory.createSoundFromAsset(resourceManager.getSoundManager(), resourceManager.getApplicationContext(), "ducky01.ogg");
+			soundCrankyCry = SoundFactory.createSoundFromAsset(resourceManager.getSoundManager(), resourceManager.getApplicationContext(), "cranky_cry.ogg");
+			soundCrankyLaugh = SoundFactory.createSoundFromAsset(resourceManager.getSoundManager(), resourceManager.getApplicationContext(), "cranky_laugh.ogg");
 			music = MusicFactory.createMusicFromAsset(resourceManager.getMusicManager(), resourceManager.getApplicationContext(), "level_music.mp3");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

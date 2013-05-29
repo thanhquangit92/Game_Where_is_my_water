@@ -31,6 +31,10 @@ public abstract class BaseScene extends Scene {
         this._camera   = _resourcesManager._camera;
         createScene();
 	}  
+	
+	public BaseScene(int unused) { 
+		 
+	}  
 
 	// ---------------------------------------
 	// METHOD

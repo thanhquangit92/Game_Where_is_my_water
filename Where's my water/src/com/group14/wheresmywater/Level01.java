@@ -2,6 +2,7 @@ package com.group14.wheresmywater;
 
 import java.util.ArrayList;
 
+import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
@@ -18,6 +19,7 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
+import org.andengine.opengl.util.GLState;
 
 import android.graphics.Point;
 import android.hardware.SensorManager;
@@ -57,6 +59,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	public int nDuckyHaveWater = 0;
 	private long timeStart; 
 	private boolean isGameWin = false; 
+	private boolean isGameOver = false;
 
 	@Override
 	public void createScene() {
@@ -85,6 +88,13 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		this.setOnSceneTouchListener(this); 
 	}   
 
+	public Level01(){
+		
+	}
+	
+	public Level01(int unused){
+		super(unused);
+	}
 	 
 	private void createCranky() {
 		// TODO Auto-generated method stub 
@@ -242,7 +252,8 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		listWater = new ArrayList<Sprite>();
 		listBody = new ArrayList<Body>();  
 		for (int i = 0; i < count; i++) {
-			Sprite drop = new Sprite(pX, pY, 100, 100, _resource.water_Region, _vbom);  
+			Sprite drop = new Sprite(pX, pY, 100, 100, _resource.water_Region, _vbom);
+			drop.setZIndex(10);
 			Rectangle rect = new Rectangle(pX + 42.5f, pY + 80, 10, 10, _vbom);
 			
 			final FixtureDef fixtureDef = PhysicsFactory.createFixtureDef(1f, 0f, 0f); 
@@ -296,7 +307,40 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 			soil.Update(); 
 		} 
 		sortChildren();  
-		updateWater();  
+		updateWater(); 
+		
+		if(isGameWin == false && isGameOver == false && listWater.size() <= 0){
+			isGameOver = true;
+			gameOver();
+		}
+	}
+
+	private void gameOver() {
+		// TODO Auto-generated method stub
+		if(_resource.music.isPlaying())
+			_resource.music.stop();
+		_resource.soundCrankyCry.play();
+		((SmoothCamera)_camera).setCenter(400, 950);
+		((SmoothCamera)_camera).setZoomFactor(2.0f); 
+		Thread threadGameOver = new ThreadGameOver();
+		threadGameOver.start(); 
+	}
+
+	class ThreadGameOver extends Thread{ 
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			try {   
+				Thread.sleep(2500);  
+				((SmoothCamera)_camera).setCenter(400, 640);
+				((SmoothCamera)_camera).setZoomFactor(1.0f); 
+				Thread.sleep(2000);
+				SceneManager.getInstance().loadSceneGameReplay(_engine);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} 
 	}
 
 	private void updateWater() {
@@ -312,8 +356,18 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 					Body b = listBody.get(i);
 					mPhysicsWorld.destroyBody(b);
 					listBody.remove(i);
-					listWater.remove(i);
-				}
+					listWater.remove(i); 
+				} 
+			}
+			
+			if(sprite.getX() < -sprite.getWidth() || sprite.getX() > Global.CAMERA_WIDTH
+					|| sprite.getY() > Global.CAMERA_HEIGHT){
+				this.detachChild(sprite);
+				Body b = listBody.get(i);
+				mPhysicsWorld.destroyBody(b);
+				listBody.remove(i);
+				listWater.remove(i);
+				i--;
 			}
 		}
 
@@ -379,7 +433,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		int id = pMenuItem.getID();
 		switch (id) {
 		case RESTART_MENU:
-			if(isGameWin)
+			if(isGameWin && isGameOver == false)
 				return true; 
 			if(_resource.music.isPlaying())
 				_resource.music.stop();
@@ -416,12 +470,11 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 				Global.IDScene = 1;
 				Global.nDuckyHaveWater = nDuckyHaveWater;
 				_resource.soundGameWin.play();
+				_resource.soundCrankyLaugh.play();
 				if(_resource.music.isPlaying())
 					_resource.music.stop();
-				Thread.sleep(5000);  
-				SceneManager.getInstance().loadScoreScene(_engine);
-				((SmoothCamera)_camera).setCenter(400, 640); 
-				((SmoothCamera)_camera).setZoomFactor(1.0f);  
+				Thread.sleep(4500);  
+				SceneManager.getInstance().loadScoreScene(_engine); 
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

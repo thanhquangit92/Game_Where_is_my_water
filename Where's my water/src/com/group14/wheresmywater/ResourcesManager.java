@@ -32,6 +32,7 @@ public class ResourcesManager {
     public LoadingSceneResource _loadingSceneResource;
     public ScoreSceneResource _scoreSceneResource;
     public Level01Resource _level01Resource; 
+    public SelectLevelSceneResource _selectLevelResource;
     
     //---------------------------------------------
     // LOAD & UNLOAD RESOURCE
@@ -106,6 +107,20 @@ public class ResourcesManager {
 		}
     }
     
+    public void loadSelectLevelScreen()
+    {
+    	_selectLevelResource = new SelectLevelSceneResource();
+    	_selectLevelResource.load();
+    }
+    
+    public void unloadSelectLevelScreen()
+    {
+		if (_selectLevelResource != null) {
+			_selectLevelResource.unload();
+			_selectLevelResource = null;
+		}
+    }
+    
     public void loadGameResources()
     {
         loadGameGraphics();
@@ -137,8 +152,7 @@ public class ResourcesManager {
     {
         
     }
-    
-    
+     
     
     /**
      * @param engine

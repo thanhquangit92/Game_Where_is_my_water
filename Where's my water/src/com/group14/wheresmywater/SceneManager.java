@@ -3,6 +3,7 @@ package com.group14.wheresmywater;
 import java.util.ArrayList;
 
 import org.andengine.engine.Engine;
+import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.engine.handler.timer.ITimerCallback;
 import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.ui.IGameInterface.OnCreateSceneCallback;
@@ -12,7 +13,7 @@ public class SceneManager {
 	// ---------------------------------------------
 	// LIST SCENES
 	// ---------------------------------------------
-	private static ArrayList<BaseScene> listGameScene;
+	private ArrayList<BaseScene> listGameScene = null;
 	
 	// ---------------------------------------------
 	// SCENES
@@ -38,22 +39,17 @@ public class SceneManager {
 	 //---------------------------------------------
     // VARIABLES
     //--------------------------------------------- 
-    private static final SceneManager INSTANCE = new SceneManager(); 
+    private static final SceneManager INSTANCE = new SceneManager();
     private SceneType _currentSceneType = SceneType.SCENE_SPLASH; 
     private BaseScene _currentScene; 
     private Engine _engine = ResourcesManager.getInstance()._engine; 
-
-//    private SceneManager(){ 
-//    	listGameScene = new ArrayList<BaseScene>();
-//    	listGameScene.add(new Level01());
-//    }
+ 
 
 	public void setScene(BaseScene scene)
     {  
         _engine.setScene(scene);
-        _currentScene = scene;  
-        
-        addScene(scene);
+        _currentScene = scene;   
+        //addScene(scene);
     } 
 	
 	 public void addScene(BaseScene scene)
@@ -132,8 +128,13 @@ public class SceneManager {
        return scene;
     } 
     
-    public static SceneManager getInstance(){
+    public static SceneManager getInstance(){  
     	return INSTANCE;
+    }
+    
+    public static void prepareManager(){
+    	getInstance().listGameScene = new ArrayList<BaseScene>();
+    	getInstance().listGameScene.add(new Level01(1));
     }
     
     public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback)
@@ -179,16 +180,19 @@ public class SceneManager {
     
     public void loadScoreScene(final Engine mEngine)
     {
-        setScene(_loadScene);
-        _currentScene.disposeScene();
+        //setScene(_loadScene); 
+    	final BaseScene scene = _currentScene; 
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
             {
                 mEngine.unregisterUpdateHandler(pTimerHandler);
                 ResourcesManager.getInstance().loadScoreScreen();
-                _scoreScene = new ScoreScene();
+                _scoreScene = new ScoreScene(); 
                 setScene(_scoreScene);
+                ((SmoothCamera)ResourcesManager.getInstance()._camera).setCenter(400, 640); 
+				((SmoothCamera)ResourcesManager.getInstance()._camera).setZoomFactor(1.0f);  
+                scene.disposeScene();
             }
         }));
     }
@@ -207,5 +211,52 @@ public class SceneManager {
                 setScene(_gameScene);
             }
         }));
+    }
+    
+    public void loadSceneGame(final int id, final Engine mEngine)
+    {
+        setScene(_loadScene);
+        _currentScene.disposeScene();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler); 
+                listGameScene.get(id).load();
+                _gameScene = listGameScene.get(id).clone();
+                setScene(_gameScene);
+            }
+        }));
+    }
+    
+    public void loadSelectLevelScene(final Engine mEngine)
+    {
+        setScene(_loadScene);
+        _currentScene.disposeScene();
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler); 
+                ResourcesManager.getInstance().loadSelectLevelScreen(); 
+                setScene(new SelectLevelScene());
+            }
+        }));
+    }
+    
+    public void loadMenuScene(final Engine mEngine)
+    {
+    	setScene(_loadScene);
+        _currentScene.disposeScene(); 
+        mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
+        {
+            public void onTimePassed(final TimerHandler pTimerHandler) 
+            {
+                mEngine.unregisterUpdateHandler(pTimerHandler);
+                ResourcesManager.getInstance().loadMainMenuScreen();
+                _menuScene = new MainMenuScene();
+                setScene(_menuScene);  
+            }
+        })); 
     }
 }

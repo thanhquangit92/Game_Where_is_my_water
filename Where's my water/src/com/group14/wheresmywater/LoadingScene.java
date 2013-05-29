@@ -12,7 +12,7 @@ public class LoadingScene extends BaseScene{
 	public void createScene() {
 		// TODO Auto-generated method stub
 		_resource = ResourcesManager.getInstance()._loadingSceneResource;
-		 setBackground(new Background(Color.BLACK));
+		 setBackground(new Background(Color.BLACK));  
 		 attachChild(new Text(280, 1000, _resource._font, "Loading...", _vbom));
 	}
 

@@ -68,7 +68,7 @@ public class ScoreSceneResource {
 		btnSelectLevelTextureAtlas.load();
 		
 		btnNextLevelTextureAtlas = new BitmapTextureAtlas(_resourceManager.getTextureManager() ,512, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		btnSelectLevel_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btnNextLevelTextureAtlas, _resourceManager.getAssets(), "btnnextlevel.png", 0, 0);
+		btnNextLevel_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btnNextLevelTextureAtlas, _resourceManager.getAssets(), "btnnextlevel.png", 0, 0);
 		btnNextLevelTextureAtlas.load(); 
 		
 		completeLevelTextureAtlas = new BitmapTextureAtlas(_resourceManager.getTextureManager(), 256, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);

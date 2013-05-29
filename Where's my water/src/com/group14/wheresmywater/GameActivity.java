@@ -58,6 +58,7 @@ public class GameActivity extends BaseGameActivity {
 	@Override
 	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback)throws Exception {
 		ResourcesManager.prepareManager(mEngine, this, mCamera, getVertexBufferObjectManager());
+		SceneManager.prepareManager();
 		mResourcesManager = ResourcesManager.getInstance();
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}

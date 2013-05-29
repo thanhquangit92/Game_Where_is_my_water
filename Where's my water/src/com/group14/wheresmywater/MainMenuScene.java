@@ -5,8 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
 import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -15,20 +13,13 @@ import org.andengine.entity.scene.menu.item.SpriteMenuItem;
 import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
-
-import com.group14.wheresmywater.SceneManager.SceneType;
 
 import android.os.Environment;
 
+import com.group14.wheresmywater.SceneManager.SceneType;
+
 public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener{   
-	
-	private static MainMenuSceneResource _resource = ResourcesManager.getInstance()._mainMenuSceneResource;
+	private MainMenuSceneResource _resource;
 	private Sprite background; 
 	private Sprite logo;   
 	private Sprite radio; 
@@ -36,11 +27,13 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	@Override
 	public void createScene() {  
+		_resource = ResourcesManager.getInstance()._mainMenuSceneResource;
+		
 		createBackground(); 
 		createRadio();
-		createMenu();
+		createMenu(); 
+		createCranky();
 		createMusic();
-		//createCasau();
 	} 
 	
 	private void createBackground() {   
@@ -53,21 +46,13 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		this.attachChild(radio);
 	}
 	
-//	private void createCasau() {
-//		// TODO Auto-generated method stub
-//		BitmapTextureAtlas bmpWaitWater = new BitmapTextureAtlas(this.getTextureManager(), 512, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA); 
-//		TiledTextureRegion casauWaitRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(bmpWaitWater, ((BaseGameActivity)_activity).getAssets(), "gfx/casauwait.png", 0, 0, 4, 4);  
-//		bmpWaitWater.load();  
-//		
-//		addCasau(casauWaitRegion);
-//	}
-
-	private void addCasau(TiledTextureRegion region) {
-		AnimatedSprite _spriteCasau = new AnimatedSprite(320, 740, 400, 400, region, _vbom);
+	private void createCranky() {
+		// TODO Auto-generated method stubv
+		AnimatedSprite _spriteCasau = new AnimatedSprite(320, 740, 400, 400, _resource.cranky_region, _vbom);
 		_spriteCasau.setZIndex(3);
 		_spriteCasau.animate(300);
 		this.attachChild(_spriteCasau);
-	}
+	} 
 	
 	private final int MENU_PLAY = 0; 
 
@@ -111,7 +96,10 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		
 		this.detachSelf();
 		this.dispose(); 
-		System.out.println("Dispose");
+		
+		ResourcesManager.getInstance().unloadMainMenuScreen();
+		
+		System.out.println("Mainmenu Dispose");
 	}
 
 	@Override
@@ -124,20 +112,17 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		// TODO Auto-generated method stub
-		_resource.music.stop();
+		if(_resource.music.isPlaying())
+			_resource.music.stop();
 		
 		int id = pMenuItem.getID();
 		switch (id) {
 		case MENU_PLAY:
 			if (isPlayFirst()) {
-				 SceneManager.getInstance().loadLevel01Scene(_engine);
-//				BaseScene select = new SelectLevel(_sceneManager); 
-//				_sceneManager.setScene(select);
-			} 
-//				else {
-//				BaseScene game = new Level01(_sceneManager);
-//				_sceneManager.setScene(game);
-//			}
+				SceneManager.getInstance().loadLevel01Scene(_engine);
+			} else {
+				SceneManager.getInstance().loadSelectLevelScene(_engine);
+			}
 			break;
 		default:
 			break;
@@ -148,19 +133,19 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	private boolean isPlayFirst() {
 		// TODO Auto-generated method stub
-//		try {
-//			File root = Environment.getExternalStorageDirectory(); 
-//			FileReader filereader = new FileReader(new File(root, "wmw.txt"));   
-//			filereader.close();
-//		} catch (FileNotFoundException e1) {
-//			// TODO Auto-generated catch block
-//			e1.printStackTrace();
-//			return false;
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}  
-		return true;
+		try {
+			File root = Environment.getExternalStorageDirectory(); 
+			FileReader filereader = new FileReader(new File(root, "wmw.txt"));   
+			filereader.close();
+		} catch (FileNotFoundException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}  
+		return false;
 	}
 
 	@Override

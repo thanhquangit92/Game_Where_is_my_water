@@ -180,7 +180,7 @@ public class ScoreScene extends BaseScene implements IOnMenuItemClickListener{
 	    
 	    final IMenuItem replayMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(REPLAY_MENU, 210, 82, _resource.btnReplay_Region, _vbom), 1.1f, 1);
 	    final IMenuItem levelMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(LEVEL_MENU, 210, 82, _resource.btnSelectLevel_Region, _vbom), 1.1f, 1);
-	    final IMenuItem nextlevelMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEXT_LEVEL_MENU, 210, 82, _resource.btnSelectLevel_Region, _vbom), 1.1f, 1);
+	    final IMenuItem nextlevelMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(NEXT_LEVEL_MENU, 210, 82, _resource.btnNextLevel_Region, _vbom), 1.1f, 1);
 	  
 	    childScene.addMenuItem(replayMenuItem);  
 	    childScene.addMenuItem(levelMenuItem);  
@@ -224,16 +224,16 @@ public class ScoreScene extends BaseScene implements IOnMenuItemClickListener{
 			SceneManager.getInstance().loadSceneGameReplay(_engine);
 			isDirect = true;
 			break;
-//		case LEVEL_MENU:
-//			BaseScene scene1 = new SelectLevel(_sceneManager);
-//			_sceneManager.setScene(scene1);
-//			isDirect = true;
-//			break;
-//		case NEXT_LEVEL_MENU:
-//			BaseScene scene2 = _sceneManager.setNextScene(Global.IDScene);
-//			if(scene2 != null)
-//				isDirect = true;
-//			break;
+		case LEVEL_MENU:
+			SceneManager.getInstance().loadSelectLevelScene(_engine);
+			isDirect = true;
+			break;
+		case NEXT_LEVEL_MENU:
+			if(Global.IDScene < Global.nScene){
+				SceneManager.getInstance().loadSceneGame(Global.IDScene  + 1, _engine);
+				isDirect = true;
+			}
+			break;
 		default:
 			break;
 		}
