@@ -135,6 +135,7 @@ public class SceneManager {
     public static void prepareManager(){
     	getInstance().listGameScene = new ArrayList<BaseScene>();
     	getInstance().listGameScene.add(new Level01(1));
+    	getInstance().listGameScene.add(new Level02(1));
     }
     
     public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback)
@@ -197,10 +198,10 @@ public class SceneManager {
         }));
     }
     
-    public void loadSceneGameReplay(final Engine mEngine)
+    public void loadGameSceneReplay(final Engine mEngine)
     {
-        setScene(_loadScene);
-        _currentScene.disposeScene();
+    	 _currentScene.disposeScene();
+        setScene(_loadScene); 
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
@@ -213,17 +214,18 @@ public class SceneManager {
         }));
     }
     
-    public void loadSceneGame(final int id, final Engine mEngine)
+    public void loadGameScene(final int id, final Engine mEngine)
     {
-        setScene(_loadScene);
-        _currentScene.disposeScene();
+    	final int index = id - 1;
+    	 _currentScene.disposeScene();
+        setScene(_loadScene); 
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
             {
                 mEngine.unregisterUpdateHandler(pTimerHandler); 
-                listGameScene.get(id).load();
-                _gameScene = listGameScene.get(id).clone();
+                listGameScene.get(index).load();
+                _gameScene = listGameScene.get(index).clone();
                 setScene(_gameScene);
             }
         }));
@@ -231,8 +233,8 @@ public class SceneManager {
     
     public void loadSelectLevelScene(final Engine mEngine)
     {
-        setScene(_loadScene);
-        _currentScene.disposeScene();
+    	 _currentScene.disposeScene();
+        setScene(_loadScene); 
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 
@@ -246,8 +248,8 @@ public class SceneManager {
     
     public void loadMenuScene(final Engine mEngine)
     {
-    	setScene(_loadScene);
-        _currentScene.disposeScene(); 
+    	_currentScene.disposeScene(); 
+    	setScene(_loadScene); 
         mEngine.registerUpdateHandler(new TimerHandler(0.1f, new ITimerCallback() 
         {
             public void onTimePassed(final TimerHandler pTimerHandler) 

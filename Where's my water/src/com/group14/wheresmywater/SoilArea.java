@@ -43,7 +43,7 @@ public class SoilArea {
 	private PhysicsWorld mPhysicsWorld;
 
 	private final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0f,
-			0f, 0.5f);
+			0f, 0.0f);
 
 	public float getX() {
 		return mPositionX;

@@ -1,8 +1,6 @@
 package com.group14.wheresmywater;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.entity.sprite.Sprite;
-import org.andengine.opengl.util.GLState;
 
 import com.group14.wheresmywater.SceneManager.SceneType;
 
@@ -14,18 +12,10 @@ public class SplashScene extends BaseScene{
 	@Override
 	public void createScene() {
 		// TODO Auto-generated method stub
-		splash = new Sprite(0, 0, _resource.splash_region, _vbom)
-		{ 
-		    @Override
-			protected void preDraw(GLState pGLState, Camera pCamera) {
-				// TODO Auto-generated method stub
-		    	 super.preDraw(pGLState, pCamera);
-			       pGLState.enableDither();
-			} 
-		};
+		splash = new Sprite(0, 0, _resource.splash_region, _vbom); 
 		        
 		splash.setScale(1.5f);
-		splash.setPosition(400, 240);
+		splash.setPosition(300, 540);
 		attachChild(splash);
 	}
 

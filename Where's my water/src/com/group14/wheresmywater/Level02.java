@@ -30,8 +30,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.group14.wheresmywater.SceneManager.SceneType;
 
-public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenuItemClickListener { 
-	private Level01Resource _resource;
+public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenuItemClickListener { 
+	private Level02Resource _resource;
 	
 	private Sprite _spriteRock; 
 	private Sprite _spriteWall;  
@@ -53,7 +53,6 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	
 	private MenuScene childScene;
 	private final int RESTART_MENU = 0;
-	private final int PAUSE_MENU = 1;
 	
 	private int nWaterIntoRoom = 0;   
 	
@@ -65,7 +64,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	@Override
 	public void createScene() {
 		// TODO Auto-generated method stub  
-		_resource = ResourcesManager.getInstance()._level01Resource;
+		_resource = ResourcesManager.getInstance()._level02Resource;
 //		_sceneManager.setScene(new SceneLoadReplay(_sceneManager, this));
 		
 		// get time start Level
@@ -81,7 +80,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		createRock();
 		createWater(390, 100, 80);
 		createRectPipe();
-		createMenu();
+		createMenuRestart();
 		createDuckyEmpty();  
 		createCranky();
 		playMusic();
@@ -89,11 +88,11 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		this.setOnSceneTouchListener(this); 
 	}   
 
-	public Level01(){
+	public Level02(){
 		
 	}
 	
-	public Level01(int unused){
+	public Level02(int unused){
 		super(unused);
 	}
 	 
@@ -103,7 +102,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	}
 
 	private void addCranky(TiledTextureRegion region) {
-		_spriteCranky = new AnimatedSprite(340, 990, 200, 200, region, _vbom);
+		_spriteCranky = new AnimatedSprite(130, 990, 200, 200, region, _vbom);
 		_spriteCranky.setZIndex(3);
 		_spriteCranky.animate(200);
 		this.attachChild(_spriteCranky);
@@ -111,19 +110,20 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 
 	private void createDuckyEmpty() {
 		// TODO Auto-generated method stub 
-		int nDucky = 3;
-		float topEmpty = 290;
-		float leftEmpty = 368;
+		int nDucky = 3; 
 		float top = 10;
 		float left = 10;
 		listDuckyEmpty = new ArrayList<Sprite>();
 		listDucky = new ArrayList<Sprite>();
+		Vector2[] pos = {new Vector2(420, 800), new Vector2(440, 600), new Vector2(470, 300)};
 		for (int i = 0; i < nDucky; i++) {
-			Sprite duckyEmpty = new Sprite(leftEmpty, topEmpty + i * 150, _resource.listduckywater_region.get(0), _vbom); 
+			float topEmpty = pos[i].y;
+			float leftEmpty = pos[i].x;
+			Sprite duckyEmpty = new Sprite(leftEmpty, topEmpty, _resource.listduckywater_region.get(0), _vbom); 
 			duckyEmpty.setTag(0);
 			listDuckyEmpty.add(duckyEmpty);
 			duckyEmpty.setZIndex(0);
-			touch(leftEmpty + 32, topEmpty + i * 150 + 32);
+			touch(leftEmpty + 32, topEmpty + 32);
 			
 			Sprite ducky = new Sprite(left + i * 70, top, _resource.listduckywater_region.get(0), _vbom);  
 			listDucky.add(ducky);
@@ -131,25 +131,22 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 			
 			this.attachChild(duckyEmpty);
 			this.attachChild(ducky);
-		}
+		}   
 	}
 
-	private void createMenu() {
+	private void createMenuRestart() {
 		// TODO Auto-generated method stub
 		childScene = new MenuScene(this._camera);
 	    childScene.setPosition(0, 0); 
 	   
 	    final IMenuItem restartMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RESTART_MENU, 75, 75, _resource.btnRePlay_Region, _vbom), 1.1f, 1);
-	    final IMenuItem pauseMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PAUSE_MENU, 75, 75, _resource.btnPause_Region, _vbom), 1.1f, 1);
 	     
 	    childScene.addMenuItem(restartMenuItem);  
-	    childScene.addMenuItem(pauseMenuItem);  
 	    childScene.buildAnimations();
 	    childScene.setBackgroundEnabled(false); 
 	    childScene.setOnMenuItemClickListener(this);
 	    
-	    restartMenuItem.setPosition(720 - 75 - 5, 10);
-	    pauseMenuItem.setPosition(720, 10);
+	    restartMenuItem.setPosition(720, 10);
 	    setChildScene(childScene);
 	}
 
@@ -161,7 +158,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	
 	private void createRectPipe() {
 		// TODO Auto-generated method stub
-		rectPipe = new Rectangle(378, 862, 48, 1, _vbom);
+		rectPipe = new Rectangle(405, 1030, 45, 1, _vbom);
 	}
 
 	private void createWall() {
@@ -173,52 +170,54 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 
 	private void createSoil() {
 		// TODO Auto-generated method stub
-		listSoil = new ArrayList<SoilArea>();   
+		listSoil = new ArrayList<SoilArea>();
 		float WidthSoil = 800.0f;
-		float HeightSoil = 700.0f;
+		float HeightSoil = 1280.0f;
 		pos = new Point(0, 150);
 		nRow = 10;
 		nCol = 10;
-		wCell = WidthSoil/nCol;
-		hCell = HeightSoil/nRow;
-		
+		wCell = WidthSoil / nCol;
+		hCell = HeightSoil / nRow;
+
 		for (int i = 0; i < nRow; i++) {
 			for (int j = 0; j < nCol; j++) {
 				SoilArea soil = new SoilArea();
 				soil.addPoint(0, 0);
-				soil.addPoint(wCell, 0);
-				soil.addPoint(wCell, hCell); 
-				soil.addPoint(0, hCell);
-		 
+				if (!(i >= 6 && j < 4)) { 
+					soil.addPoint(wCell, 0);
+					soil.addPoint(wCell, hCell);
+					soil.addPoint(0, hCell);
+				}
+
 				soil.setTouchable(true);
-				soil.setPosition(j*wCell + pos.x, i*hCell + pos.y);
+				soil.setPosition(j * wCell + pos.x, i * hCell + pos.y);
 				listSoil.add(soil);
 			}
-		} 
-		
+		}
+ 
 		touch(400, 150);
 		touch(400, 170);
 		touch(400, 190);
 		touch(400, 210);
-		
+
 		touch(300, 150);
 		touch(330, 165);
 		touch(360, 180);
 		touch(390, 195);
-		
+
 		touch(500, 150);
 		touch(470, 165);
 		touch(440, 180);
-		touch(410, 195);  
-		
+		touch(410, 195);
+
 		for (SoilArea soil : listSoil) {
-			soil.attachToScene(this, this._engine, mPhysicsWorld, _vbom); 
-		}  
-	}
+			soil.attachToScene(this, this._engine, mPhysicsWorld, _vbom);
+		}
+	} 
  
 	private void createRock() {
 		// TODO Auto-generated method stub 
-		_spriteRock = new Sprite(0, 480, 800, 800, _resource.rock_Region, _vbom);
+		_spriteRock = new Sprite(0, 0, 800, 1280, _resource.rock_Region, _vbom);
 		_spriteRock.setZIndex(3);
 		this.attachChild(_spriteRock);
 		 
@@ -228,26 +227,23 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	private void createBody() {
 		// TODO Auto-generated method stub
 		FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0f, 0f, 0f);
-		BodyProvider.generateBodies("body/body_level01.xml", mPhysicsWorld, FIXTURE_DEF);
+		BodyProvider.generateBodies("body/body_level02.xml", mPhysicsWorld, FIXTURE_DEF);
 	}
    
 	@Override
 	public void onBackKeyPressed() {
-		// TODO Auto-generated method stub 
-		if (!isGameWin) {
-			_engine.stop();
-			_activity.showDialog(1);
-		} 
-		return;
+		// TODO Auto-generated method stub
+//		if (!isGameWin) {
+//			_engine.stop();
+//			_activity.showDialog(1);
+//		} 
+		System.exit(0);
 	}
 
 	@Override
 	public void disposeScene() {
 		// TODO Auto-generated method stub
-		if(_resource.music.isPlaying())
-			_resource.music.stop();
 		ResourcesManager.getInstance().unloadLevel01Screen();
-		System.out.println("Level01 Dispose");
 	}
 
 	@Override
@@ -419,9 +415,9 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		// Di chuyển giọt nước vào bồn
 		mPhysicsWorld.destroyBody(listBody.get(index));
 		listWater.remove(index);
-		listBody.remove(index);
-		sprite.setPosition(300, 480 + 480); 
-		Rectangle rect = new Rectangle(300 + 42.5f,480 + 480 + 80, 5, 5, _vbom);
+		listBody.remove(index); 
+		sprite.setPosition(130, 1000); 
+		Rectangle rect = new Rectangle(130 + 42.5f,1000 + 80, 5, 5, _vbom);
 		
 		final FixtureDef fixtureDef = PhysicsFactory.createFixtureDef(1f, 0f, 5f); 
 		Body body = PhysicsFactory.createCircleBody(mPhysicsWorld, rect, BodyType.DynamicBody, fixtureDef);
@@ -446,17 +442,7 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 				_resource.music.stop();
 			SceneManager.getInstance().loadGameSceneReplay(_engine);
 			break;
-		case PAUSE_MENU:
-			if (!isGameWin) {
-				_activity.runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						_engine.stop();
-						_activity.showDialog(2);
-					}}); 
-			} 
-			break;
+
 		default:
 			break;
 		}
@@ -473,8 +459,9 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 			addCranky(_resource.crankyHaveWater_Region);
 			Thread threadWin = new ThreadWinGame();
 			threadWin.start(); 
-			((SmoothCamera)_camera).setCenter(400, 950);
-			((SmoothCamera)_camera).setZoomFactor(2.0f); 
+			((SmoothCamera) _camera).setMaxVelocityX(200);
+			((SmoothCamera) _camera).setCenter(200, 950);
+			((SmoothCamera) _camera).setZoomFactor(2.0f); 
 		}
 	}
 	
@@ -502,13 +489,13 @@ public class Level01 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	@Override
 	public BaseScene clone() {
 		// TODO Auto-generated method stub
-		return new Level01();
+		return new Level02();
 	}
 
 
 	@Override
 	public void load() {
 		// TODO Auto-generated method stub
-		ResourcesManager.getInstance().loadLevel01Screen();
+		ResourcesManager.getInstance().loadLevel02Screen();
 	} 
 }

@@ -19,8 +19,8 @@ public class SplashSceneResource{
 	private void loadGraphic() {
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		splashTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 256, 256, TextureOptions.BILINEAR);
-		splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, resourceManager._activity, "splash.png", 0, 0);
+		splashTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 188, 188, TextureOptions.BILINEAR);
+		splash_region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(splashTextureAtlas, resourceManager._activity, "splash1.png", 0, 0);
 		splashTextureAtlas.load(); 
 	}
 

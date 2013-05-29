@@ -32,6 +32,7 @@ public class ResourcesManager {
     public LoadingSceneResource _loadingSceneResource;
     public ScoreSceneResource _scoreSceneResource;
     public Level01Resource _level01Resource; 
+    public Level02Resource _level02Resource; 
     public SelectLevelSceneResource _selectLevelResource;
     
     //---------------------------------------------
@@ -90,6 +91,20 @@ public class ResourcesManager {
 		if (_level01Resource != null) {
 			_level01Resource.unload();
 			_level01Resource = null;
+		}
+    }
+    
+    public void loadLevel02Screen()
+    {
+    	_level02Resource = new Level02Resource();
+    	_level02Resource.load();
+    }
+    
+    public void unloadLevel02Screen()
+    {
+		if (_level02Resource != null) {
+			_level02Resource.unload();
+			_level02Resource = null;
 		}
     }
     

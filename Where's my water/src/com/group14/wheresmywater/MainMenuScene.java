@@ -85,17 +85,17 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	@Override
 	public void disposeScene() {
-		background.detachSelf();
-		background.dispose();
-		
-		logo.detachSelf();
-		logo.dispose(); 
-		
-		radio.detachSelf();
-		radio.dispose();
-		
-		this.detachSelf();
-		this.dispose(); 
+//		background.detachSelf();
+//		background.dispose();
+//		
+//		logo.detachSelf();
+//		logo.dispose(); 
+//		
+//		radio.detachSelf();
+//		radio.dispose();
+//		
+//		this.detachSelf();
+//		this.dispose(); 
 		
 		ResourcesManager.getInstance().unloadMainMenuScreen();
 		

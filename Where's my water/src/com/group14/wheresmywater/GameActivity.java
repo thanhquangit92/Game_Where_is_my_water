@@ -18,9 +18,14 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.ColorDrawable;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.Window;
+import android.widget.Button;
 
-public class GameActivity extends BaseGameActivity {
+public class GameActivity extends BaseGameActivity implements OnClickListener {
 
 	//---------------------------------------------
     // VARIABLES
@@ -110,11 +115,13 @@ public class GameActivity extends BaseGameActivity {
 	    return false; 
 	}
 
+	private Dialog dialog;
+	
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case 1:
-			AlertDialog.Builder builder = new AlertDialog.Builder(this);
+			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
 			builder.setIcon(R.drawable.ic_launcher);
 
 			final AlertDialog alert = builder.create();
@@ -122,7 +129,7 @@ public class GameActivity extends BaseGameActivity {
 			alert.setButton("Main Menu", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int id) {
 					mEngine.start();
-					//mSceneManager.setScene(new MainMenuScene(mSceneManager));
+					SceneManager.getInstance().loadMenuScene(mEngine);
 					alert.dismiss();
 				}
 			});
@@ -131,10 +138,61 @@ public class GameActivity extends BaseGameActivity {
 					mEngine.start();
 					alert.dismiss();
 				}
-			});
+			}); 
 			return alert;
+		case 2:
+			 dialog = new Dialog(this); 
+		     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));
+		     dialog.setContentView(R.layout.dialog);
+		     dialog.setOnKeyListener(new Dialog.OnKeyListener() { 
+		            @Override
+		            public boolean onKey(DialogInterface arg0, int keyCode,
+		                    KeyEvent event) {
+		                // TODO Auto-generated method stub
+		                if (keyCode == KeyEvent.KEYCODE_BACK) {
+		                	mEngine.start();
+		                	dialog.dismiss();
+		                }
+		                return true;
+		            }
+		        });
+		     
+		     Button btnResume = (Button)dialog.findViewById(R.id.btnresume);
+		     Button btnMenu = (Button)dialog.findViewById(R.id.btnmenu);
+		     Button btnLevels = (Button)dialog.findViewById(R.id.btnlevels);
+		     
+		     btnResume.setOnClickListener(this);
+		     btnMenu.setOnClickListener(this);
+		     btnLevels.setOnClickListener(this);
+		    
+		     return dialog;
 		default:
 			return null;
+		}
+	}
+
+	@Override
+	public void onClick(View v) {
+		// TODO Auto-generated method stub
+		int id = v.getId(); 
+		switch (id) {
+		case R.id.btnresume:
+			mEngine.start();
+			dialog.dismiss();
+			break;
+		case R.id.btnmenu:
+			mEngine.start();
+			SceneManager.getInstance().loadMenuScene(mEngine);
+			dialog.dismiss();
+			break;
+		case R.id.btnlevels:
+			mEngine.start();
+			SceneManager.getInstance().loadSelectLevelScene(mEngine);
+			dialog.dismiss();
+			break;
+		default:
+			break;
 		}
 	}
 }

@@ -221,7 +221,7 @@ public class ScoreScene extends BaseScene implements IOnMenuItemClickListener{
 		boolean isDirect = false;
 		switch (id) {
 		case REPLAY_MENU:
-			SceneManager.getInstance().loadSceneGameReplay(_engine);
+			SceneManager.getInstance().loadGameSceneReplay(_engine);
 			isDirect = true;
 			break;
 		case LEVEL_MENU:
@@ -230,7 +230,7 @@ public class ScoreScene extends BaseScene implements IOnMenuItemClickListener{
 			break;
 		case NEXT_LEVEL_MENU:
 			if(Global.IDScene < Global.nScene){
-				SceneManager.getInstance().loadSceneGame(Global.IDScene  + 1, _engine);
+				SceneManager.getInstance().loadGameScene(Global.IDScene  + 1, _engine);
 				isDirect = true;
 			}
 			break;

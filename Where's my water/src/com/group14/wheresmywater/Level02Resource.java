@@ -14,7 +14,7 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 
-public class Level01Resource {
+public class Level02Resource {
 	private ResourcesManager resourceManager = ResourcesManager.getInstance();
 	
 	public TextureRegion wall_Region; 
@@ -27,10 +27,7 @@ public class Level01Resource {
 	private BitmapTextureAtlas waterTextureAtlas; 
 	
 	public TextureRegion btnRePlay_Region; 
-	private BitmapTextureAtlas btnRePlayTextureAtlas;
-	
-	public TextureRegion btnPause_Region; 
-	private BitmapTextureAtlas btnPauseTextureAtlas; 
+	private BitmapTextureAtlas btnRePlayTextureAtlas; 
 	
 	public TiledTextureRegion crankyWait_Region; 
 	private BitmapTextureAtlas crankyWaitTextureAtlas; 
@@ -56,8 +53,8 @@ public class Level01Resource {
 	private void loadGraphic() {
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-		rockTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 800, 800, TextureOptions.BILINEAR);
-		rock_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(rockTextureAtlas, resourceManager._activity, "rock_level01.png", 0, 0);
+		rockTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 800, 1280, TextureOptions.BILINEAR);
+		rock_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(rockTextureAtlas, resourceManager._activity, "rock_level02.png", 0, 0);
 		rockTextureAtlas.load(); 
 		
 		wallTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 800, 1280, TextureOptions.BILINEAR);
@@ -76,13 +73,9 @@ public class Level01Resource {
 		crankyHaveWater_Region = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(crankyHaveWaterTextureAtlas, resourceManager.getAssets(), "cranky_havewater.png", 0, 0, 4, 4);  
 		crankyHaveWaterTextureAtlas.load();  
 		
-		btnRePlayTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager() ,64, 64, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+		btnRePlayTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager() ,512, 256, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
 		btnRePlay_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btnRePlayTextureAtlas, resourceManager.getAssets(), "btnrestart.png", 0, 0);
 		btnRePlayTextureAtlas.load();
-		
-		btnPauseTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager() ,64, 64, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		btnPause_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(btnPauseTextureAtlas, resourceManager.getAssets(), "btnpause.png", 0, 0);
-		btnPauseTextureAtlas.load();
 		
 		int nducky = 6;
 		listduckywater_region = new ArrayList<TextureRegion>();

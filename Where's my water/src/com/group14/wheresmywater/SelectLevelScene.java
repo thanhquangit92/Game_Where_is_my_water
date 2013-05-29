@@ -190,7 +190,7 @@ public class SelectLevelScene extends BaseScene implements IOnMenuItemClickListe
 		if(id == 0){ 
 			SceneManager.getInstance().loadMenuScene(_engine); 
 		}else{
-			SceneManager.getInstance().loadSceneGame(id - 1, _engine);
+			SceneManager.getInstance().loadGameScene(id, _engine);
 		}
 		
 		return true;
