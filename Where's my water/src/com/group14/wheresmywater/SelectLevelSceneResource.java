@@ -67,7 +67,14 @@ public class SelectLevelSceneResource {
 		}
 	}
 
-	public void unload(){
+	public void unload(){ 
+		btnBackTextureAtlas.unload(); 
+		btnBack_Region = null; 
 		
+		bgTextureAtlas.unload();
+		bg_Region = null; 
+		 
+		menuTextureAtlas.unload(); 
+		menu_Region = null;  
 	}
 }

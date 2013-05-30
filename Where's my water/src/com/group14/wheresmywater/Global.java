@@ -6,5 +6,5 @@ public class Global {
 	public static long TimePlayGame = 0;
 	public static int IDScene = 0;
 	public static int nDuckyHaveWater = 0;
-	public static final int nScene = 5;
+	public static final int nScene = 3;
 }

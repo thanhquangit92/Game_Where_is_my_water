@@ -14,7 +14,6 @@ import org.andengine.entity.util.FPSLogger;
 import org.andengine.opengl.font.Font;
 import org.andengine.ui.activity.BaseGameActivity;
 
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,14 +26,15 @@ import android.widget.Button;
 
 public class GameActivity extends BaseGameActivity implements OnClickListener {
 
+	public static final int DIALOG_PAUSE = 1;
+	
 	//---------------------------------------------
     // VARIABLES
     //--------------------------------------------- 
 	public Font mFont;
 	public SmoothCamera mCamera;
 	public Scene mCurrentScene;
-	public SceneManager mSceneManager;
-	private ResourcesManager mResourcesManager;
+	public SceneManager mSceneManager; 
 	private static BaseGameActivity INSTANCE; 
 	
 	//---------------------------------------------
@@ -63,8 +63,7 @@ public class GameActivity extends BaseGameActivity implements OnClickListener {
 	@Override
 	public final void onCreateResources(final OnCreateResourcesCallback pOnCreateResourcesCallback)throws Exception {
 		ResourcesManager.prepareManager(mEngine, this, mCamera, getVertexBufferObjectManager());
-		SceneManager.prepareManager();
-		mResourcesManager = ResourcesManager.getInstance();
+		SceneManager.prepareManager(); 
 		pOnCreateResourcesCallback.onCreateResourcesFinished();
 	}
 
@@ -119,28 +118,8 @@ public class GameActivity extends BaseGameActivity implements OnClickListener {
 	
 	@Override
 	protected Dialog onCreateDialog(int id) {
-		switch (id) {
-		case 1:
-			AlertDialog.Builder builder = new AlertDialog.Builder(GameActivity.this);
-			builder.setIcon(R.drawable.ic_launcher);
-
-			final AlertDialog alert = builder.create();
-
-			alert.setButton("Main Menu", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					mEngine.start();
-					SceneManager.getInstance().loadMenuScene(mEngine);
-					alert.dismiss();
-				}
-			});
-			alert.setButton2("Resume", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int id) {
-					mEngine.start();
-					alert.dismiss();
-				}
-			}); 
-			return alert;
-		case 2:
+		switch (id) { 
+		case DIALOG_PAUSE:
 			 dialog = new Dialog(this); 
 		     dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
 		     dialog.getWindow().setBackgroundDrawable(new ColorDrawable(android.graphics.Color.TRANSPARENT));

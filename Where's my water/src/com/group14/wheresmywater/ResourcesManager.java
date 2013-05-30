@@ -33,6 +33,7 @@ public class ResourcesManager {
     public ScoreSceneResource _scoreSceneResource;
     public Level01Resource _level01Resource; 
     public Level02Resource _level02Resource; 
+    public Level03Resource _level03Resource; 
     public SelectLevelSceneResource _selectLevelResource;
     
     //---------------------------------------------
@@ -108,6 +109,21 @@ public class ResourcesManager {
 		}
     }
     
+    public void loadLevel03Screen()
+    {
+    	_level03Resource = new Level03Resource();
+    	_level03Resource.load();
+    }
+    
+    public void unloadLevel03Screen()
+    {
+		if (_level03Resource != null) {
+			_level03Resource.unload();
+			_level03Resource = null;
+		}
+    }
+    
+    
     public void loadScoreScreen()
     {
     	_scoreSceneResource = new ScoreSceneResource();
@@ -134,40 +150,7 @@ public class ResourcesManager {
 			_selectLevelResource.unload();
 			_selectLevelResource = null;
 		}
-    }
-    
-    public void loadGameResources()
-    {
-        loadGameGraphics();
-        loadGameFonts();
-        loadGameAudio();
-    }
-    
-    private void loadMenuGraphics()
-    {
-        
-    }
-    
-    private void loadMenuAudio()
-    {
-        
-    }
-
-    private void loadGameGraphics()
-    {
-        
-    }
-    
-    private void loadGameFonts()
-    {
-        
-    }
-    
-    private void loadGameAudio()
-    {
-        
-    }
-     
+    } 
     
     /**
      * @param engine

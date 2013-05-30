@@ -10,7 +10,6 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.color.Color;
 
 import android.graphics.Typeface;
@@ -108,7 +107,28 @@ public class ScoreSceneResource {
 	}
 
 	public void unload(){
+		bgTextureAtlas.unload(); 
+		bg_Region = null; 
 		
-	}
-
+		btnReplayTextureAtlas.unload(); 
+		btnReplay_Region = null; 
+		
+		btnNextLevelTextureAtlas.unload();
+		btnNextLevel_Region = null; 
+		 
+		btnSelectLevelTextureAtlas.unload(); 
+		btnSelectLevel_Region = null; 
+		
+		completeLevelTextureAtlas.unload(); 
+		completeLevel_Region = null; 
+		
+		superLevelTextureAtlas.unload(); 
+		superLevel_Region = null; 
+		
+		goodJobLevelTextureAtlas.unload(); 
+		goodJobLevel_Region = null; 
+		
+		excellentLevelTextureAtlas.unload(); 
+		excellentLevel_Region = null;  
+	} 
 }

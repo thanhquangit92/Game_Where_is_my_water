@@ -21,6 +21,7 @@ public final class R {
         public static final int btnresume=0x7f020007;
         public static final int btnresume_press=0x7f020008;
         public static final int ic_launcher=0x7f020009;
+        public static final int ic_wmw=0x7f02000a;
     }
     public static final class id {
         public static final int btnlevels=0x7f060002;

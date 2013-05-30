@@ -1,8 +1,11 @@
 package com.group14.wheresmywater;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import org.andengine.entity.scene.background.SpriteBackground;
@@ -20,8 +23,7 @@ import com.group14.wheresmywater.SceneManager.SceneType;
 
 public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener{   
 	private MainMenuSceneResource _resource;
-	private Sprite background; 
-	private Sprite logo;   
+	private Sprite background;  
 	private Sprite radio; 
 	private MenuScene childScene; 
 
@@ -85,18 +87,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 
 	@Override
 	public void disposeScene() {
-//		background.detachSelf();
-//		background.dispose();
-//		
-//		logo.detachSelf();
-//		logo.dispose(); 
-//		
-//		radio.detachSelf();
-//		radio.dispose();
-//		
-//		this.detachSelf();
-//		this.dispose(); 
-		
+ 
 		ResourcesManager.getInstance().unloadMainMenuScreen();
 		
 		System.out.println("Mainmenu Dispose");
@@ -120,6 +111,7 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		case MENU_PLAY:
 			if (isPlayFirst()) {
 				SceneManager.getInstance().loadLevel01Scene(_engine);
+				createFileData();
 			} else {
 				SceneManager.getInstance().loadSelectLevelScene(_engine);
 			}
@@ -131,11 +123,38 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 		return true;
 	}
 
+	private void createFileData() {
+		// TODO Auto-generated method stub
+		String[] s = new String[Global.nScene]; 
+		for (int i = 0; i < s.length; i++) {
+			s[i] = String.valueOf(i + 1) + "," + "0" + "," + "0";
+		}
+		
+		try { 
+			File root = Environment.getExternalStorageDirectory(); 
+			FileWriter filewriter = new FileWriter(new File(root, "wmw.txt"));  
+			BufferedWriter writer = new BufferedWriter(filewriter);
+			for (int i = 0; i < s.length; i++) {
+				writer.write(s[i] + '\n');
+			}
+		 	writer.close(); ;
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private boolean isPlayFirst() {
 		// TODO Auto-generated method stub
+		String str = "";
 		try {
 			File root = Environment.getExternalStorageDirectory(); 
-			FileReader filereader = new FileReader(new File(root, "wmw.txt"));   
+			FileReader filereader = new FileReader(new File(root, "wmw.txt"));  
+			BufferedReader reader = new BufferedReader(filereader); 
+			str = reader.readLine();
 			filereader.close();
 		} catch (FileNotFoundException e1) {
 			// TODO Auto-generated catch block
@@ -145,6 +164,10 @@ public class MainMenuScene extends BaseScene implements IOnMenuItemClickListener
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}  
+		
+		if(str != "" && Integer.parseInt(str.split(",")[2]) == 0)
+			return true;
+		
 		return false;
 	}
 

@@ -89,8 +89,9 @@ public class MainMenuSceneResource {
 		radioTextureAtlas.unload();
 		radio_region = null;
 		
-//		btnOptionsTextureAtlas.unload();
-//		btnOptions_region = null; 
+		crankyTextureAtlas.unload();
+		cranky_region = null; 
+		
 		music = null;
 	}
 }

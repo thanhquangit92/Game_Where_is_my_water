@@ -7,9 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
-import org.andengine.audio.music.MusicManager;
 import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.scene.menu.MenuScene;
 import org.andengine.entity.scene.menu.MenuScene.IOnMenuItemClickListener;
@@ -19,28 +16,17 @@ import org.andengine.entity.scene.menu.item.decorator.ScaleMenuItemDecorator;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.entity.text.TextOptions;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.TextureOptions;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
-import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
-import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.HorizontalAlign;
-import org.andengine.util.color.Color;
+
+import android.os.Environment;
 
 import com.group14.wheresmywater.SceneManager.SceneType;
-
-import android.graphics.Typeface;
-import android.media.MediaPlayer;
-import android.os.Environment;
 
 public class SelectLevelScene extends BaseScene implements IOnMenuItemClickListener { 
 	private SelectLevelSceneResource _resource;
 	ArrayList<IMenuItem> imenuList ;  
 	private MenuScene childScene; 
-	
+	private int[] indexs;
 
 	@Override
 	public void createScene() {
@@ -69,13 +55,13 @@ public class SelectLevelScene extends BaseScene implements IOnMenuItemClickListe
 		childScene.setPosition(0, 0);
 		    
 		int Col = 3;  
-		int[] indexs = new int[Global.nScene]; 
+		indexs = new int[Global.nScene]; 
 		int size = 200;
 		boolean played = false;
 		for(int i  =  0; i < Global.nScene; i ++){
 			String [] info = s[i].split(",");
 			indexs[i] = getIndexMenuItem(info);
-			if(indexs[i] == 4 && i > 0 && played == true)
+			if(indexs[i] == 4 && ((i == 0) || (played == true)))
 				indexs[i] = 0;
 			IMenuItem menuitem = new ScaleMenuItemDecorator(new SpriteMenuItem(i + 1, size, size, _resource.menu_Region.getTextureRegion(indexs[i]), _vbom), 1.1f, 1);
 			this.imenuList.add(menuitem); 
@@ -166,36 +152,26 @@ public class SelectLevelScene extends BaseScene implements IOnMenuItemClickListe
 	public boolean onMenuItemClicked(MenuScene pMenuScene, IMenuItem pMenuItem,
 			float pMenuItemLocalX, float pMenuItemLocalY) {
 		// TODO Auto-generated method stub
-		int id = pMenuItem.getID();
-		switch (id) {
-//		case 0:
-//			_sceneManager.setScene(new MainMenuScene(_sceneManager));
-//			bNavigate = true;
-//			break;
-//		case 1:
-//			_sceneManager.setScene(new Level01(_sceneManager));
-//			bNavigate = true;
-//			break;
-//		case 2:
-//			_sceneManager.setScene(new Level02(_sceneManager));
-//			bNavigate = true;
-//			break; 
-		default:
-			break;
-		}
-		
-		if(_resource.music.isPlaying())
-			_resource.music.stop();  
+		int id = pMenuItem.getID(); 
 		
 		if(id == 0){ 
 			SceneManager.getInstance().loadMenuScene(_engine); 
+			stopMusic();
 		}else{
-			SceneManager.getInstance().loadGameScene(id, _engine);
+			if(indexs[id - 1] != 4){
+				SceneManager.getInstance().loadGameScene(id, _engine);
+				stopMusic();
+			}
 		}
 		
 		return true;
 	}
-
+	  
+	private void stopMusic(){
+		if(_resource.music.isPlaying())
+			_resource.music.stop();  
+	}
+	
 	@Override
 	public BaseScene clone() {
 		// TODO Auto-generated method stub

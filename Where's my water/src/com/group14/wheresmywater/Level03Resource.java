@@ -13,7 +13,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 
-public class Level02Resource {
+public class Level03Resource {
 	private ResourcesManager resourceManager = ResourcesManager.getInstance();
 	
 	public TextureRegion wall_Region; 
@@ -56,7 +56,7 @@ public class Level02Resource {
 		// TODO Auto-generated method stub
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		rockTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 800, 1280, TextureOptions.BILINEAR);
-		rock_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(rockTextureAtlas, resourceManager._activity, "rock_level02.png", 0, 0);
+		rock_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(rockTextureAtlas, resourceManager._activity, "rock_level03.png", 0, 0);
 		rockTextureAtlas.load(); 
 		
 		wallTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 800, 1280, TextureOptions.BILINEAR);

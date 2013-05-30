@@ -39,8 +39,7 @@ public class SceneManager {
 	 //---------------------------------------------
     // VARIABLES
     //--------------------------------------------- 
-    private static final SceneManager INSTANCE = new SceneManager();
-    private SceneType _currentSceneType = SceneType.SCENE_SPLASH; 
+    private static final SceneManager INSTANCE = new SceneManager(); 
     private BaseScene _currentScene; 
     private Engine _engine = ResourcesManager.getInstance()._engine; 
  
@@ -136,6 +135,7 @@ public class SceneManager {
     	getInstance().listGameScene = new ArrayList<BaseScene>();
     	getInstance().listGameScene.add(new Level01(1));
     	getInstance().listGameScene.add(new Level02(1));
+    	getInstance().listGameScene.add(new Level03(1));
     }
     
     public void createSplashScene(OnCreateSceneCallback pOnCreateSceneCallback)

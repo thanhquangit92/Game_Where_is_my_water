@@ -2,7 +2,6 @@ package com.group14.wheresmywater;
 
 import java.util.ArrayList;
 
-import org.andengine.engine.camera.Camera;
 import org.andengine.engine.camera.SmoothCamera;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.IOnSceneTouchListener;
@@ -19,7 +18,6 @@ import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.opengl.util.GLState;
 
 import android.graphics.Point;
 import android.hardware.SensorManager;
@@ -53,6 +51,7 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	
 	private MenuScene childScene;
 	private final int RESTART_MENU = 0;
+	private final int PAUSE_MENU = 1;
 	
 	private int nWaterIntoRoom = 0;   
 	
@@ -64,8 +63,7 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	@Override
 	public void createScene() {
 		// TODO Auto-generated method stub  
-		_resource = ResourcesManager.getInstance()._level02Resource;
-//		_sceneManager.setScene(new SceneLoadReplay(_sceneManager, this));
+		_resource = ResourcesManager.getInstance()._level02Resource; 
 		
 		// get time start Level
 		timeStart = System.currentTimeMillis();
@@ -80,7 +78,7 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		createRock();
 		createWater(390, 100, 80);
 		createRectPipe();
-		createMenuRestart();
+		createMenu();
 		createDuckyEmpty();  
 		createCranky();
 		playMusic();
@@ -134,19 +132,22 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		}   
 	}
 
-	private void createMenuRestart() {
+	private void createMenu() {
 		// TODO Auto-generated method stub
 		childScene = new MenuScene(this._camera);
 	    childScene.setPosition(0, 0); 
 	   
 	    final IMenuItem restartMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(RESTART_MENU, 75, 75, _resource.btnRePlay_Region, _vbom), 1.1f, 1);
+	    final IMenuItem pauseMenuItem = new ScaleMenuItemDecorator(new SpriteMenuItem(PAUSE_MENU, 75, 75, _resource.btnPause_Region, _vbom), 1.1f, 1);
 	     
 	    childScene.addMenuItem(restartMenuItem);  
+	    childScene.addMenuItem(pauseMenuItem);  
 	    childScene.buildAnimations();
 	    childScene.setBackgroundEnabled(false); 
 	    childScene.setOnMenuItemClickListener(this);
 	    
-	    restartMenuItem.setPosition(720, 10);
+	    restartMenuItem.setPosition(720 - 75 - 5, 10);
+	    pauseMenuItem.setPosition(720, 10);
 	    setChildScene(childScene);
 	}
 
@@ -233,17 +234,28 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	@Override
 	public void onBackKeyPressed() {
 		// TODO Auto-generated method stub
-//		if (!isGameWin) {
-//			_engine.stop();
-//			_activity.showDialog(1);
-//		} 
-		System.exit(0);
+		if (!isGameWin) {
+			_activity.runOnUiThread(new Runnable() {
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					_engine.stop();
+					_activity.showDialog(GameActivity.DIALOG_PAUSE);
+				}}); 
+		} 
+		return; 
 	}
 
 	@Override
 	public void disposeScene() {
 		// TODO Auto-generated method stub
+		stopMusic();
 		ResourcesManager.getInstance().unloadLevel01Screen();
+	}
+
+	private void stopMusic() {
+		if(_resource.music.isPlaying())
+			_resource.music.stop();
 	}
 
 	@Override
@@ -319,9 +331,7 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 	}
 
 	private void gameOver() {
-		// TODO Auto-generated method stub
-		if(_resource.music.isPlaying())
-			_resource.music.stop();
+		stopMusic();
 		_resource.soundCrankyCry.play();
 		((SmoothCamera)_camera).setCenter(400, 950);
 		((SmoothCamera)_camera).setZoomFactor(2.0f); 
@@ -438,11 +448,20 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 		case RESTART_MENU:
 			if(isGameWin && isGameOver == false)
 				return true; 
-			if(_resource.music.isPlaying())
-				_resource.music.stop();
+			stopMusic();
 			SceneManager.getInstance().loadGameSceneReplay(_engine);
 			break;
-
+		case PAUSE_MENU:
+			if (!isGameWin) {
+				_activity.runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						_engine.stop();
+						_activity.showDialog(GameActivity.DIALOG_PAUSE);
+					}}); 
+			} 
+			break;
 		default:
 			break;
 		}
@@ -471,12 +490,11 @@ public class Level02 extends BaseScene implements IOnSceneTouchListener, IOnMenu
 			// TODO Auto-generated method stub
 			try {  
 				Global.TimePlayGame = System.currentTimeMillis() - timeStart;
-				Global.IDScene = 1;
+				Global.IDScene = 2;
 				Global.nDuckyHaveWater = nDuckyHaveWater;
 				_resource.soundGameWin.play();
 				_resource.soundCrankyLaugh.play();
-				if(_resource.music.isPlaying())
-					_resource.music.stop();
+				stopMusic();
 				Thread.sleep(4500);  
 				SceneManager.getInstance().loadScoreScene(_engine); 
 			} catch (InterruptedException e) {

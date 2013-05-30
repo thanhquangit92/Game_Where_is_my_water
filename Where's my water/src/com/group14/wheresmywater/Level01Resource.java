@@ -12,7 +12,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
-import org.andengine.ui.activity.BaseGameActivity;
 
 public class Level01Resource {
 	private ResourcesManager resourceManager = ResourcesManager.getInstance();
@@ -64,7 +63,7 @@ public class Level01Resource {
 		wall_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(wallTextureAtlas, resourceManager._activity, "wall.png", 0, 0);
 		wallTextureAtlas.load(); 
 		
-		waterTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 128, 128, TextureOptions.BILINEAR);
+		waterTextureAtlas = new BitmapTextureAtlas(resourceManager.getTextureManager(), 90, 90, TextureOptions.BILINEAR);
 		water_Region = BitmapTextureAtlasTextureRegionFactory.createFromAsset(waterTextureAtlas, resourceManager._activity, "drop.png", 0, 0);
 		waterTextureAtlas.load(); 
 		
@@ -114,7 +113,33 @@ public class Level01Resource {
 		}
 	}
 
-	public void unload(){
-		
+	public void unload() {
+		wallTextureAtlas.unload();
+		wall_Region = null;
+
+		rockTextureAtlas.unload();
+		rock_Region = null;
+
+		waterTextureAtlas.unload();
+		water_Region = null;
+
+		btnRePlayTextureAtlas.unload();
+		btnRePlay_Region = null;
+
+		btnPauseTextureAtlas.unload();
+		btnPause_Region = null;
+
+		crankyWaitTextureAtlas.unload();
+		crankyWait_Region = null;
+
+		crankyHaveWaterTextureAtlas.unload();
+		crankyHaveWater_Region = null;
+
+		for (BitmapTextureAtlas bmp : listduckywaterTextureAtlas) {
+			bmp.unload();
+		}
+		listduckywaterTextureAtlas = null; 
+		 
+		listduckywater_region = null;
 	}
 }

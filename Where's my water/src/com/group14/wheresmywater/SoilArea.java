@@ -1,11 +1,11 @@
 package com.group14.wheresmywater;
 
 import static org.andengine.extension.physics.box2d.util.constants.PhysicsConstants.PIXEL_TO_METER_RATIO_DEFAULT;
+
 import java.util.Vector;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.Engine.EngineLock;
-import org.andengine.entity.primitive.Line;
 import org.andengine.entity.primitive.Polygon;
 import org.andengine.entity.scene.Scene;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
@@ -35,15 +35,13 @@ public class SoilArea {
 	private int mTouchRadius;
 	private Vector<Polygon> mCurrPolygons;
 	private Vector<Body> mCurrPolygonBodies;
-	private Vector<Line> mCurrLines;
 
 	private Scene mScene;
 	private VertexBufferObjectManager mVertexBuffObjManager;
 	private Engine mEngine;
 	private PhysicsWorld mPhysicsWorld;
 
-	private final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0f,
-			0f, 0.0f);
+	private final FixtureDef FIXTURE_DEF = PhysicsFactory.createFixtureDef(0f, 0f, 0.0f);
 
 	public float getX() {
 		return mPositionX;
@@ -118,8 +116,7 @@ public class SoilArea {
 		mLineWidth = 3.5f;
 
 		mCurrPolygons = new Vector<Polygon>();
-		mCurrPolygonBodies = new Vector<Body>();
-		mCurrLines = new Vector<Line>(); 
+		mCurrPolygonBodies = new Vector<Body>(); 
 	}
 
 	public void addPoint(float pX, float pY) {
@@ -257,34 +254,6 @@ public class SoilArea {
 					FIXTURE_DEF, PIXEL_TO_METER_RATIO_DEFAULT);
 
 			mCurrPolygonBodies.add(lineBody);
-		}
-	}
-
-	private void generateLines(int numPoints, float[] pVertexX, float[] pVertexY) {
-		for (int i = 0; i < numPoints - 1; i++) {
-			Line line = new Line(pVertexX[i] + mPositionX, pVertexY[i]
-					+ mPositionY, pVertexX[i + 1] + mPositionX, pVertexY[i + 1]
-					+ mPositionY, mVertexBuffObjManager);
-
-			line.setColor(mLineColor);
-			line.setLineWidth(mLineWidth);
-
-			mCurrLines.add(line);
-			line.setZIndex(1);
-			mScene.attachChild(line);
-		}
-
-		if (numPoints > 1) {
-			Line line = new Line(pVertexX[0] + mPositionX, pVertexY[0]
-					+ mPositionY, pVertexX[numPoints - 1] + mPositionX,
-					pVertexY[numPoints - 1] + mPositionY, mVertexBuffObjManager);
-
-			line.setColor(mLineColor);
-			line.setLineWidth(mLineWidth);
-
-			line.setZIndex(1);
-			mCurrLines.add(line);
-			mScene.attachChild(line);
 		}
 	}
 
